@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_alpha"
-    android:orientation="vertical"
-    android:layout_gravity="center"
-    android:gravity="center"
-    tools:context=".application.ScreenActivity">
+    android:background="@color/black_alpha">
 
     <ImageView
         android:id="@+id/image_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:src="@android:drawable/ic_delete"
-        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:visibility="invisible"
         android:onClick="close" />
 
     <ImageView
         android:id="@+id/image_ad"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:layout_below="@id/image_close"
+        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:visibility="gone" />
 
     <VideoView
         android:id="@+id/video_ad"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:layout_below="@id/image_close"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:visibility="gone" />
-</LinearLayout>
+</RelativeLayout>

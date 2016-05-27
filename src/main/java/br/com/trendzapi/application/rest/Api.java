@@ -21,17 +21,17 @@ import br.com.trendzapi.application.cdp.CustomJsonObjectRequest;
 
 public class Api {
     private Context mContext;
-    private static final String prefixURL = "http://192.168.1.3/projetos/trendzapi/restserver/";
-    //private static final String prefixURL = "http://www.payatphone.com/api/restserver/";
+    //private static final String prefixURL = "http://192.168.1.3/projetos/trendzapi/restserver/";
+    private static final String prefixURL = "http://www.payatphone.com/api/restserver/";
 
     public Api(Context context) {
         this.mContext = context;
     }
 
-    public void buscaAd(String appKey) {
+    public void buscaAd(String appKey, String operator, String number) {
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
 
-        String url = prefixURL + "apianuncio/anunciorandom?app_key=" + appKey;
+        String url = prefixURL + "apianuncio/anunciorandom?app_key=" + appKey + "&operator=" + operator + "&number=" + number;
 
         CustomJsonObjectRequest request = new CustomJsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -50,7 +50,6 @@ public class Api {
                                 Intent intent = new Intent(mContext, ScreenActivity.class);
                                 intent.putExtra("extensao", extensao);
                                 intent.putExtra("arquivo", arquivo);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(intent);
                             }
                         } catch (JSONException e) {

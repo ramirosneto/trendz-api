@@ -3,36 +3,22 @@ package br.com.trendzapi.application;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
-import java.util.HashMap;
-
 import br.com.trendzapi.application.rest.Api;
 
 public class TrendzAd {
     private Context mContext;
-    private Api api;
-    private String mAppKey, mOperator;
+    private String mAppKey, mOperator, mPhoneNumber;
 
     public TrendzAd(Context context, String appKey) {
         mContext = context;
         mAppKey = appKey;
         mOperator = getOperatorName();
-
-        registerAccess();
-    }
-
-    public void registerAccess() {
-        api = new Api(mContext);
-
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("app_id", mAppKey);
-        params.put("operadora", mOperator);
-
-        api.registraAcesso(params);
+        mPhoneNumber = getPhoneNumber();
     }
 
     public void makeAd() {
-        api = new Api(mContext);
-        api.buscaAd(mAppKey);
+        Api api = new Api(mContext);
+        api.buscaAd(mAppKey, mOperator, mPhoneNumber);
     }
 
     private String getOperatorName() {
@@ -41,6 +27,19 @@ public class TrendzAd {
         try {
             TelephonyManager tManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
             ret = tManager.getSimOperatorName();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    private String getPhoneNumber() {
+        String ret = "";
+
+        try {
+            TelephonyManager tMgr = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+            ret = tMgr.getLine1Number();
         } catch (Exception e) {
             e.printStackTrace();
         }

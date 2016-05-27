@@ -4,13 +4,16 @@ import android.app.ProgressDialog;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import br.com.trendzapi.R;
 
@@ -20,17 +23,22 @@ public class ScreenActivity extends AppCompatActivity {
     private MediaController mediaControls;
     private ImageView imageClose;
 
+    ImageView imageAd;
+    VideoView videoAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_ad);
 
         imageClose = (ImageView) findViewById(R.id.image_close);
+        imageAd = (ImageView) findViewById(R.id.image_ad);
+        videoAd = (VideoView) findViewById(R.id.video_ad);
 
         String extensao = getIntent().hasExtra("extensao") ? getIntent().getStringExtra("extensao") : "";
         String arquivo = getIntent().hasExtra("arquivo") ? getIntent().getStringExtra("arquivo") : "";
 
-        if(extensao.equals(".jpeg") || extensao.equals(".jpg") || extensao.equals(".png")) {
+        if(extensao.equals(".jpeg") || extensao.equals(".jpg") || extensao.equals(".png") || extensao.equals(".gif")) {
             setupImage(arquivo);
         }else if(extensao.equals(".mp4") || extensao.equals(".avi") || extensao.equals(".mkv")) {
             setupVideo(arquivo);
@@ -38,14 +46,21 @@ public class ScreenActivity extends AppCompatActivity {
     }
 
     private void setupImage(String arquivo) {
-        ImageView imageAd = (ImageView) findViewById(R.id.image_ad);
         imageAd.setVisibility(View.VISIBLE);
 
-        Picasso.with(this)
+        Glide.with(this)
                 .load(arquivo)
+                .thumbnail(0.5f)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageAd);
 
-        imageClose.setVisibility(View.VISIBLE);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                imageClose.setVisibility(View.VISIBLE);
+            }
+        }, 3000);
     }
 
     private void setupVideo(String arquivo) {
@@ -54,11 +69,10 @@ public class ScreenActivity extends AppCompatActivity {
             mediaControls.setVisibility(View.INVISIBLE);
         }
 
-        final VideoView videoAd = (VideoView) findViewById(R.id.video_ad);
         videoAd.setVisibility(View.VISIBLE);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Carregando...");
+        progressDialog.setMessage("Aguarde, carregando...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -100,5 +114,21 @@ public class ScreenActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putInt("Position", videoAd.getCurrentPosition());
+        videoAd.pause();
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        position = savedInstanceState.getInt("Position");
+        videoAd.seekTo(position);
     }
 }
