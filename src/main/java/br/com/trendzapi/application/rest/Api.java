@@ -21,8 +21,8 @@ import br.com.trendzapi.application.cdp.CustomJsonObjectRequest;
 
 public class Api {
     private Context mContext;
-    private static final String prefixURL = "http://192.168.1.3/projetos/trendzapi/restserver/";
-    //private static final String prefixURL = "http://www.payatphone.com/api/restserver/";
+    //private static final String prefixURL = "http://192.168.1.3/projetos/trendzapi/restserver/";
+    private static final String prefixURL = "http://www.payatphone.com/api/restserver/";
 
     public Api(Context context) {
         this.mContext = context;
