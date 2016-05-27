@@ -21,8 +21,8 @@ import br.com.trendzapi.application.cdp.CustomJsonObjectRequest;
 
 public class Api {
     private Context mContext;
-    //private static final String prefixURL = "http://192.168.1.3/projetos/trendzapi/restserver/";
-    private static final String prefixURL = "http://www.payatphone.com/api/restserver/";
+    private static final String prefixURL = "http://192.168.1.3/projetos/trendzapi/restserver/";
+    //private static final String prefixURL = "http://www.payatphone.com/api/restserver/";
 
     public Api(Context context) {
         this.mContext = context;
@@ -46,10 +46,12 @@ public class Api {
 
                                 String extensao = c.getString("an_extensao");
                                 String arquivo = prefixURL + "public/upload/" + c.getString("an_arquivo");
+                                String link = c.getString("an_link");
 
                                 Intent intent = new Intent(mContext, ScreenActivity.class);
                                 intent.putExtra("extensao", extensao);
                                 intent.putExtra("arquivo", arquivo);
+                                intent.putExtra("link", link);
                                 mContext.startActivity(intent);
                             }
                         } catch (JSONException e) {

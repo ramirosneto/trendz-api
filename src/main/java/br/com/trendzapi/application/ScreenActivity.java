@@ -1,6 +1,7 @@
 package br.com.trendzapi.application;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,15 +38,16 @@ public class ScreenActivity extends AppCompatActivity {
 
         String extensao = getIntent().hasExtra("extensao") ? getIntent().getStringExtra("extensao") : "";
         String arquivo = getIntent().hasExtra("arquivo") ? getIntent().getStringExtra("arquivo") : "";
+        String link = getIntent().hasExtra("link") ? getIntent().getStringExtra("link") : "null";
 
         if(extensao.equals(".jpeg") || extensao.equals(".jpg") || extensao.equals(".png") || extensao.equals(".gif")) {
-            setupImage(arquivo);
+            setupImage(arquivo, link);
         }else if(extensao.equals(".mp4") || extensao.equals(".avi") || extensao.equals(".mkv")) {
-            setupVideo(arquivo);
+            setupVideo(arquivo, link);
         }
     }
 
-    private void setupImage(String arquivo) {
+    private void setupImage(String arquivo, final String link) {
         imageAd.setVisibility(View.VISIBLE);
 
         Glide.with(this)
@@ -55,6 +57,18 @@ public class ScreenActivity extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageAd);
 
+        if(link.equals("null")) {
+            imageAd.setOnClickListener(null);
+        }else {
+            imageAd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+link));
+                    startActivity(intent);
+                }
+            });
+        }
+
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -63,7 +77,7 @@ public class ScreenActivity extends AppCompatActivity {
         }, 3000);
     }
 
-    private void setupVideo(String arquivo) {
+    private void setupVideo(String arquivo, final String link) {
         if (mediaControls == null) {
             mediaControls = new MediaController(this);
             mediaControls.setVisibility(View.INVISIBLE);
@@ -82,6 +96,18 @@ public class ScreenActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if(link.equals("null")) {
+            videoAd.setOnClickListener(null);
+        }else {
+            videoAd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+link));
+                    startActivity(intent);
+                }
+            });
         }
 
         videoAd.requestFocus();
