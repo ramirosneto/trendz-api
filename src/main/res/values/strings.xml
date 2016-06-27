@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TrendzApi</string>
+
+    <string name="facebook_app_id">Facebook</string>
 </resources>

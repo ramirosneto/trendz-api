@@ -2,13 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.trendzapi">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true">
 
         <activity
-            android:name=".application.ScreenActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name="br.com.trendzapi.ScreenActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="sensorPortrait" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
     </application>
 </manifest>
